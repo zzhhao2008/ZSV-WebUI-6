@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/bootstrap/5.3.2/css/bootstrap.min.css">
+    <script src="/static/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap/icons/bootstrap-icons.css">
+    <script src="/static/js/ui/tools.js"></script>
+    <script src="/static/js/aceeditor/ace.js"></script>
+    <script src="/static/js/aceinit.js"></script>
+    <script src="/static/js/chartjs/chart.js"></script>
+    <script src="/static/js/chartinit.js"></script>
+    <link rel="shortcut icon" href="/icon.jpg">
+    <title>大痴国</title>
+</head>
+
+<body>
+    <script>
+        data = {
+            "id": "myChart",
+            "type": "radar",
+            "labels": [
+                "语文",
+                "数学",
+                "英语",
+                "物理",
+                "化学",
+                "政治",
+                "总分"
+            ],
+            "datas": [
+                {
+                    "label": "历史得分率(%)",
+                    "data": [
+                        41.3,
+                        95.65,
+                        86.96,
+                        73.91,
+                        86.96,
+                        91.3,
+                        86.96
+                    ],
+                    "color": "red"
+                },
+                {
+                    "label": "本次得分率(%)",
+                    "data": [
+                        41.66666666666667,
+                        75,
+                        87.5,
+                        100,
+                        97.91666666666666,
+                        85.41666666666666,
+                        81.25
+                    ],
+                    "color": "blue"
+                },
+                {
+                    "label": "本次得分率(%)",
+                    "data": [
+                        41.66666666666667,
+                        75,
+                        87.5,
+                        100,
+                        97.91666666666666,
+                        85.41666666666666,
+                        81.25
+                    ],
+                    "color": "yellow"
+                }
+            ],
+            
+        }
+        //allChart(data)
+        chart=new eChart()
+        chart.setType("bar")
+        chart.setLabels(data.labels)
+        chart.addData(data.datas[1].label, data.datas[1].data, data.datas[1].color)
+        chart.addData(data.datas[0].label, data.datas[0].data, data.datas[0].color)
+        
+        chart.show(document.body)
+    </script>
+</body>
+
+</html>
