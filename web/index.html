@@ -1,88 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/bootstrap/5.3.2/css/bootstrap.min.css">
-    <script src="/static/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="/static/bootstrap/icons/bootstrap-icons.css">
-    <script src="/static/js/ui/tools.js"></script>
-    <script src="/static/js/aceeditor/ace.js"></script>
-    <script src="/static/js/aceinit.js"></script>
-    <script src="/static/js/chartjs/chart.js"></script>
-    <script src="/static/js/chartinit.js"></script>
-    <link rel="shortcut icon" href="/icon.jpg">
-    <title>大痴国</title>
-</head>
-
-<body>
-    <script>
-        data = {
-            "id": "myChart",
-            "type": "radar",
-            "labels": [
-                "语文",
-                "数学",
-                "英语",
-                "物理",
-                "化学",
-                "政治",
-                "总分"
-            ],
-            "datas": [
-                {
-                    "label": "历史得分率(%)",
-                    "data": [
-                        41.3,
-                        95.65,
-                        86.96,
-                        73.91,
-                        86.96,
-                        91.3,
-                        86.96
-                    ],
-                    "color": "red"
-                },
-                {
-                    "label": "本次得分率(%)",
-                    "data": [
-                        41.66666666666667,
-                        75,
-                        87.5,
-                        100,
-                        97.91666666666666,
-                        85.41666666666666,
-                        81.25
-                    ],
-                    "color": "blue"
-                },
-                {
-                    "label": "本次得分率(%)",
-                    "data": [
-                        41.66666666666667,
-                        75,
-                        87.5,
-                        100,
-                        97.91666666666666,
-                        85.41666666666666,
-                        81.25
-                    ],
-                    "color": "yellow"
-                }
-            ],
-            
-        }
-        //allChart(data)
-        chart=new eChart()
-        chart.setType("bar")
-        chart.setLabels(data.labels)
-        chart.addData(data.datas[1].label, data.datas[1].data, data.datas[1].color)
-        chart.addData(data.datas[0].label, data.datas[0].data, data.datas[0].color)
-        
-        chart.show(document.body)
-    </script>
-</body>
-
-</html>
+﻿<script src="/controler/main.js"></script>
+<script>
+    window.onload = function () {
+        headGenerator()
+        navBarGenerator_Slide({
+            "title": "title",
+            "children": [],
+            "icon": "/icon.jpg",
+            //"titlehref":"#"
+        })
+    }
+/*<nav class="navbar fixed-top navtopc">
+	<div class="container">
+		<a class="navbar-brand" href="/">
+			<img src="/icon.jpg" alt="Logo" width="30" height="30" class="d-inline-block align-text-top rounded-circle">
+			名字</a>
+		<button class="navbar-toggler">
+			<span class="navbar-toggler-icon" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"></span>
+		</button>
+		<div class="offcanvas offcanvas-start navmainc" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+			<div class="offcanvas-header">
+				<h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+					<img src="/icon.jpg" alt="Logo" width="30" height="30" class="d-inline-block align-text-top rounded-circle">
+					123
+				</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+			</div>
+			<div class="offcanvas-body">
+				<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+					<li class="nav-item">
+						<a class="nav-link" id="wikinaver" href="/wiki"><i class='bi bi-wiki'></i>痴国百科</a>
+					</li>
+					
+					<li class="border-top my-3"></li>
+					
+				</ul>
+				<hr>
+			</div>
+		</div>
+	</div>
+</nav>*/
+</script>
