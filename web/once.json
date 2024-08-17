@@ -1,0 +1,18 @@
+{
+    "head":{"title":"SuperUI-ZSV"},
+    "theme":"light",
+    "nav":{
+        "title": "",
+        "children": [
+            {
+                "title": "痴国5",
+                "href": "#wiki",
+                "icon": "wikipedia"
+            }
+        ],
+        "icon": "/icon.jpg",
+        "titlehref":"#",
+        "login":1,
+        "reg":1
+    }
+}

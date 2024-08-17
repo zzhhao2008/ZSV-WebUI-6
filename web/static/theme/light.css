@@ -1,0 +1,59 @@
+#profilenaver {
+    border-bottom: 2px solid red;
+}
+
+body {
+    color: #000;
+    padding-top: 80px;
+    background: none;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: -1;
+    background: rgb(239, 239, 239);
+    background-size: cover;
+}
+
+.nav-item a:visited,
+.nav-item a:link,
+.navbar-brand {
+    color: rgb(75, 64, 64);
+    font-weight: 600;
+}
+
+.nav-item a:hover,
+.navbar-brand:hover {
+    color: #000;
+    font-weight: 800;
+    text-shadow: 1px 2px 2px gainsboro;
+    border-bottom: 1px solid pink;
+}
+
+.navtopc {
+    background: #e3f2fd;
+}
+
+.navmainc {
+    background: rgb(239, 239, 239);
+    color: #000;
+}
+
+.abox,
+.problembox>div,
+.problemsubbox>div,
+pre,
+.dropdown-menu,
+.dropdown-menu:hover,
+.dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.active-item {
+    border-bottom: 2px solid #FFFF00;
+}
