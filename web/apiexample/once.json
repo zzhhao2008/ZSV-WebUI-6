@@ -14,5 +14,19 @@
         "titlehref":"#",
         "login":1,
         "reg":1
+    },
+    "body":{
+        "type":"container",
+        "children":[
+            {
+                "type":"abox",
+                "innerHTML":"1128"
+            },
+            {
+                "type":"button",
+                "innerHTML":"45768",
+                "btntype":"danger"
+            }
+        ]
     }
 }

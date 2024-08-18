@@ -4,6 +4,7 @@
 }
 
 let backData = {}
+let backData_withID_body = {}
 
 function elementGenerator(type, options = []) {
     let element = document.createElement(type);
@@ -63,7 +64,7 @@ function objCmp(o1, o2, es = [], debug = 0) {
             if (typeof o1[i] == "object" || typeof o2[i] == "array") {
                 if (!objCmp(o1[i], o2[i], es, debug)) return false
             }
-            else if(o1[i] != o2[i]) {
+            else if (o1[i] != o2[i]) {
                 if (debug) {
                     console.log(i, o1[i], o2[i])
                 }
@@ -186,6 +187,9 @@ class uiControler {
         this.pollingfunction = null
         this.socketfunction = null
         this.firtsTime = 1
+        this.bodyidcnt = 0
+        this.LiveElements = []
+        this.liveElementsTimers = []
     }
 
     init(way, url, option = {}) {
@@ -261,12 +265,13 @@ class uiControler {
         if (this.firtsTime) {
             backData = data
             this.data = data
-            this.firtsTime = 0
             headGenerator(data.head)
             if (this.data.nav) {
                 this.generateNav()
             }
             themeLoader(this.data.theme)
+            this.bodyViewer()
+            this.firtsTime = 0
         }
         this.data = data
         if (this.data == backData) {
@@ -285,11 +290,12 @@ class uiControler {
         }
         if (!objCmp(this.data.nav, backData.nav)) {
             console.log("nav changed")
-            let last = document.getElementById("nav" + (backData.nav.type??"slide"))
+            let last = document.getElementById("nav" + (backData.nav.type ?? "slide"))
             if (last) last.remove()
-                //console.log("nav" + backData.nav.type??"slide")
+            //console.log("nav" + backData.nav.type??"slide")
             this.generateNav(this.data)
         }
+        this.bodyViewer()
         backData = this.data
     }
 
@@ -305,6 +311,123 @@ class uiControler {
                 navBarGenerator_Slide(this.data.nav)
                 break;
         }
+    }
+
+    bodyViewer() {
+        if (!this.data.body) {
+            console.error("body is null")
+            return
+        }
+        if (this.firtsTime) {
+            backData_withID_body = JSON.parse(JSON.stringify(this.data.body))
+            var bodycon = elementGenerator("div", { id: "bodycon" })
+            backData_withID_body = this.bodyDecoder(this.data.body, bodycon, backData_withID_body)
+            document.body.appendChild(bodycon)
+        }
+        if (!objCmp(this.data.body, backData_withID_body, ["id"])) {
+            //清除所有实时更新的内容
+            for (let i = 0; i < this.liveElementsTimers; i++) {
+                clearInterval(this.liveElementsTimers[i])
+            }
+            this.liveElementsTimers = []
+            this.LiveElements = []
+            document.getElementById("bodycon").remove()
+            var bodycon = elementGenerator("div", { id: "bodycon" })
+            backData_withID_body = this.bodyDecoder(this.data.body, bodycon, backData_withID_body)
+            document.body.appendChild(bodycon)
+
+        }
+    }
+
+    bodyDecoder(data, fatherelement, datawithID) {
+        if (!data) {
+            console.error("Body Decoder:data is null")
+        }
+        if (!fatherelement) {
+            console.error("Body Decoder:element is null")
+        }
+        if (!datawithID) {
+            datawithID = {}
+        }
+        datawithID.id = datawithID.id ?? this.bodyidcnt++
+        let thisid = datawithID.id
+        if (data.live) {
+            var live = JSON.parse(JSON.stringify(data.live))
+            var url = live.url
+            if (!url) {
+                console.error("Live url is not defined")
+            } else {
+                this.LiveElements["body" + thisid]=elementGenerator("div", { id: "body" + thisid })
+                fatherelement.appendChild(this.LiveElements["body" + thisid])
+                var tid=JSON.parse(JSON.stringify(thisid))
+                this.liveElementsTimers.push(setInterval(() => {
+                    fetch(url)
+                        .then(res => res.json())
+                        .then(ldata => {
+                            document.getElementById("body"+tid).innerHTML=""
+                            this.bodyDecoder(ldata, document.getElementById("body"+tid), {})
+                        })
+                }, live.tick))
+                return
+            }
+        }
+        switch (data.type) {
+            case "container":
+                var thiselement = elementGenerator("div", { ...{ id: "body" + thisid }, ...data.option ?? [], ...{ "class": "container" } })
+                break
+            case "button":
+                if (!data.btntype) {
+                    data.btntype = "primary"
+                }
+                var thiselement = elementGenerator("button", {
+                    ...{ id: "body" + thisid },
+                    ...data.option ?? [],
+                    ...{
+                        "class": "btn btn-" + data.btntype,
+                        "onclick": data.onclick ?? ""
+                    }
+                })
+                break
+            case "a":
+                var thiselement = elementGenerator("a", { ...{ id: "body" + thisid }, ...data.option ?? [], ...{ "href": data.href ?? "#" } })
+            case "row":
+                var thiselement = elementGenerator("div", { ...{ id: "body" + thisid }, ...data.option ?? [], ...{ "class": "row" } })
+                break
+            case "col":
+                var thiselement = elementGenerator("div", { ...{ id: "body" + thisid }, ...data.option ?? [], ...{ "class": "col-md-" + data.colsize ?? 12 } })
+                break
+            case "abox":
+                var thiselement = elementGenerator("div", { ...{ id: "body" + thisid }, ...data.option ?? [], ...{ "class": "abox" } })
+                break
+            default:
+                var thiselement = elementGenerator(data.type, { ...{ id: "body" + thisid }, ...data.option ?? [] })
+                break
+        }
+
+        if (data.innerHTML) {
+            thiselement.innerHTML = data.innerHTML
+        }
+        else if (data.children) {
+            datawithID.children = datawithID.children ?? []
+            for (let i = 0; i < data.children.length; i++) {
+                if (!datawithID["children"][i]) datawithID["children"][i] = {}
+                datawithID["children"][i] = this.bodyDecoder(data.children[i], thiselement, datawithID.children[i])
+            }
+        }
+        var last = document.getElementById("body" + thisid)
+        thiselement.id = "body" + thisid
+        console.log("Node:", thisid, data.type, last)
+        if (!last || last == null) {
+            fatherelement.appendChild(thiselement)
+            console.log("new element added to", fatherelement)
+            if (!this.firtsTime) {
+                datawithID = { ...data, ...{ id: thisid } }
+                clearInterval(this.pollingfunction)
+                console.log(data)
+            }
+        }
+
+        return datawithID
     }
 
 }
