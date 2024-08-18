@@ -399,6 +399,9 @@ class uiControler {
             case "abox":
                 var thiselement = elementGenerator("div", { ...{ id: "body" + thisid }, ...data.option ?? [], ...{ "class": "abox" } })
                 break
+            case "aceeditor":
+                initEditor(data.outname,fatherelement,data.innerHTML,data.language,data.theme)
+                break
             default:
                 var thiselement = elementGenerator(data.type, { ...{ id: "body" + thisid }, ...data.option ?? [] })
                 break
